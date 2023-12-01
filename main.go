@@ -43,10 +43,20 @@ func loadOpaEngine() (*opaPolicy.Engine, error) {
 }
 
 func createPolicyDir() (string, error) {
-	tempPolicyDir, err := os.MkdirTemp("", "rego-policies_*")
-	if err != nil {
-		fmt.Println("os.MkdirTemp Error", err)
+	var agentTempDir = "D:\\a\\_temp"
+	var err error
+	var tempPolicyDir string
+
+	if os.Getenv("AGENT_TEMPDIRECTORY") != "" {
+		tempPolicyDir, err = os.MkdirTemp(agentTempDir, "rego-policies_*")
+	} else {
+		tempPolicyDir, err = os.MkdirTemp("", "rego-policies_*")
 	}
+
+	if err != nil {
+		return "Error creating temp dir", err
+	}
+
 	fmt.Println("TempDir - ", tempPolicyDir)
 	fmt.Println()
 
