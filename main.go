@@ -23,8 +23,8 @@ func removeAll(tempDir string) {
 	}
 }
 
-func loadOpaEngine() (*opaPolicy.Engine, error) {
-	policyDir, err := createPolicyDir()
+func loadOpaEngine(agentTempDir string) (*opaPolicy.Engine, error) {
+	policyDir, err := createPolicyDir(agentTempDir)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +42,7 @@ func loadOpaEngine() (*opaPolicy.Engine, error) {
 	return opaEngine, nil
 }
 
-func createPolicyDir() (string, error) {
-	var agentTempDir = "D:\\a\\_temp"
+func createPolicyDir(agentTempDir string) (string, error) {
 	var err error
 	var tempPolicyDir string
 
@@ -118,7 +117,8 @@ func main() {
 	fmt.Println(os.Environ())
 	fmt.Println()
 
-	engine, err := loadOpaEngine()
+	var agentTempDir = os.Args[1]
+	engine, err := loadOpaEngine(agentTempDir)
 
 	if err != nil {
 		fmt.Println("Error loading opa engine", err)
